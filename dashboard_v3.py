@@ -562,7 +562,7 @@ st.plotly_chart(
 # ==========================
 
 st.subheader("📅 Monthly Performance")
-
+st.write(monthly.columns.tolist())
 st.dataframe(
     monthly,
     use_container_width=True
