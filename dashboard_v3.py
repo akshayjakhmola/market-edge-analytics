@@ -881,7 +881,7 @@ csv = tv_report.to_csv(index=False)
 st.download_button(
     label="📥 Download Detailed Trade Log",
     data=csv,
-    file_name="Supertrend_Detailed_Trade_Log.csv",
+    file_name="Nifty_Market_Edge_Trade_Log.csv",
     mime="text/csv"
 )
 # ==========================
