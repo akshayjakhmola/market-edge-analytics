@@ -24,9 +24,6 @@ st.sidebar.title(
     "Market Edge Analytics"
 )
 
-st.sidebar.caption(
-    "Nifty Market Edge"
-)
 
 st.sidebar.markdown("---")
 
