@@ -115,7 +115,7 @@ st.markdown("---")
 # KPI CARDS
 # ==========================
 
-c1, c2, c3, c4 = st.columns(4)
+c1, c2, c3, c4, c5 = st.columns(5)
 
 c1.metric(
     "Net Profit",
@@ -123,20 +123,24 @@ c1.metric(
 )
 
 c2.metric(
+    "Return %",
+    f"{return_pct}%"
+)
+
+c3.metric(
     "Profit Factor",
     profit_factor
 )
 
-c3.metric(
+c4.metric(
     "Win Rate",
     f"{win_rate}%"
 )
 
-c4.metric(
+c5.metric(
     "Max DD",
     f"{max_dd_pct}%"
 )
-
 # ==========================
 # STRATEGY SCORECARD
 # ==========================
