@@ -106,7 +106,7 @@ max_dd_pct = round(
 # ==========================
 
 st.title(
-    "🚀 Supertrend ATR(10) Factor(4)"
+    "🚀 Nifty Supertrend ATR(10) Factor(4)"
 )
 
 st.markdown("---")
