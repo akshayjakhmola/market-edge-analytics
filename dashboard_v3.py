@@ -120,7 +120,32 @@ max_dd_pct = round(
      running_peak.max()) * 100,
     2
 )
+results = (trades["PnL INR"] > 0).astype(int)
 
+max_win_streak = 0
+max_loss_streak = 0
+
+win_streak = 0
+loss_streak = 0
+
+for r in results:
+
+    if r == 1:
+        win_streak += 1
+        loss_streak = 0
+    else:
+        loss_streak += 1
+        win_streak = 0
+
+    max_win_streak = max(
+        max_win_streak,
+        win_streak
+    )
+
+    max_loss_streak = max(
+        max_loss_streak,
+        loss_streak
+    )
 # ==========================
 # HEADER
 # ==========================
@@ -344,7 +369,17 @@ c4.metric(
     "Drawdown ₹",
     f"₹{max_dd:,.0f}"
 )
+c1, c2 = st.columns(2)
 
+c1.metric(
+    "Longest Winning Streak",
+    max_win_streak
+)
+
+c2.metric(
+    "Longest Losing Streak",
+    max_loss_streak
+)
 # ==========================
 # WIN LOSS PIE CHART
 # ==========================
@@ -449,7 +484,65 @@ st.plotly_chart(
     use_container_width=True,
     key="yearly_chart"
 )
+best_year = yearly.loc[
+    yearly["Return %"].idxmax()
+]
 
+worst_year = yearly.loc[
+    yearly["Return %"].idxmin()
+]
+
+c1, c2, c3, c4 = st.columns(4)
+
+c1.metric(
+    "Best Year",
+    best_year["Year"]
+)
+
+c2.metric(
+    "Best Return %",
+    f'{best_year["Return %"]}%'
+)
+
+c3.metric(
+    "Worst Year",
+    worst_year["Year"]
+)
+
+c4.metric(
+    "Worst Return %",
+    f'{worst_year["Return %"]}%'
+)
+
+profitable_years = len(
+    yearly[yearly["PnL INR"] > 0]
+)
+
+losing_years = len(
+    yearly[yearly["PnL INR"] <= 0]
+)
+
+yearly_win_rate = round(
+    (profitable_years / len(yearly)) * 100,
+    2
+)
+
+c1, c2, c3 = st.columns(3)
+
+c1.metric(
+    "Profitable Years",
+    profitable_years
+)
+
+c2.metric(
+    "Losing Years",
+    losing_years
+)
+
+c3.metric(
+    "Yearly Win Rate",
+    f"{yearly_win_rate}%"
+)
 st.subheader("🥧 Year-wise Profit Contribution")
 
 fig_year_pie = px.pie(
@@ -473,15 +566,30 @@ st.markdown("---")
 st.subheader("📅 Monthly Performance")
 
 st.dataframe(
-    monthly,
+    monthly[
+        [
+            "Month",
+            "Trades",
+            "PnL INR",
+            "Return %",
+            "Avg PnL/Trade",
+            "Points"
+        ]
+    ],
     use_container_width=True
 )
 
 fig_month = px.bar(
     monthly,
     x="Month",
-    y="PnL INR",
-    title="Monthly Profit Analysis"
+    y="Return %",
+    hover_data=[
+        "Trades",
+        "PnL INR",
+        "Avg PnL/Trade",
+        "Points"
+    ],
+    title="Monthly Return % (₹1.5L Capital)"
 )
 avg_monthly = monthly["PnL INR"].mean()
 
@@ -493,29 +601,75 @@ st.plotly_chart(
     key="monthly_chart"
 )
 
-best_month = monthly.loc[
-    monthly["PnL INR"].idxmax()
+best_month_return = monthly.loc[
+    monthly["Return %"].idxmax()
 ]
 
-worst_month = monthly.loc[
-    monthly["PnL INR"].idxmin()
+worst_month_return = monthly.loc[
+    monthly["Return %"].idxmin()
 ]
 
-c1, c2, c3 = st.columns(3)
+c1, c2, c3, c4, c5 = st.columns(5)
 
 c1.metric(
     "Best Month",
-    best_month["Month"]
+    best_month_return["Month"]
 )
 
 c2.metric(
-    "Worst Month",
-    worst_month["Month"]
+    "Best Return %",
+    f'{best_month_return["Return %"]}%'
 )
 
 c3.metric(
+    "Worst Month",
+    worst_month_return["Month"]
+)
+
+c4.metric(
+    "Worst Return %",
+    f'{worst_month_return["Return %"]}%'
+)
+
+c5.metric(
     "Avg Monthly Profit",
     f"₹{avg_monthly:,.0f}"
+)
+profitable_months = len(
+    monthly[monthly["PnL INR"] > 0]
+)
+
+losing_months = len(
+    monthly[monthly["PnL INR"] <= 0]
+)
+
+total_months = len(monthly)
+
+monthly_win_rate = round(
+    (profitable_months / total_months) * 100,
+    2
+)
+
+c1, c2, c3, c4 = st.columns(4)
+
+c1.metric(
+    "Total Months",
+    total_months
+)
+
+c2.metric(
+    "Profitable Months",
+    profitable_months
+)
+
+c3.metric(
+    "Losing Months",
+    losing_months
+)
+
+c4.metric(
+    "Monthly Win Rate",
+    f"{monthly_win_rate}%"
 )
 # ==========================
 # COST ANALYSIS
