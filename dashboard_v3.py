@@ -150,9 +150,6 @@ for r in results:
 # HEADER
 # ==========================
 
-st.title(
-    "Nifty Market Edge"
-)
 st.markdown("""
 <div style="
 padding:25px;
