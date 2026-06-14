@@ -36,7 +36,6 @@ tv_report = pd.read_csv(
 tv_report["Entry Time"] = pd.to_datetime(
     tv_report["Entry Time"]
 )
-
 tv_report["Year"] = (
     tv_report["Entry Time"].dt.year
 )
