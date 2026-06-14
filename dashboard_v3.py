@@ -916,7 +916,5 @@ st.success(
 
     Max Drawdown : 7.12%
 
-    Status :
-    PAPER TRADING READY
     """
 )
