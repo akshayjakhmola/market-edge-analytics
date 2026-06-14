@@ -564,7 +564,7 @@ st.plotly_chart(
 st.markdown("---")
 
 st.subheader("📅 Monthly Performance")
-
+st.write(monthly.columns.tolist())
 st.dataframe(
     monthly[
         [
