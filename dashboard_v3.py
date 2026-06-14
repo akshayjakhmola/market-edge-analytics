@@ -153,7 +153,33 @@ for r in results:
 st.title(
     "Nifty Market Edge"
 )
+st.markdown("""
+<div style="
+padding:25px;
+border-radius:15px;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+text-align:center;
+box-shadow:0px 4px 15px rgba(0,0,0,0.3);
+">
 
+<h1 style="color:white;margin-bottom:5px;">
+🚀 Market Edge Analytics
+</h1>
+
+<h3 style="color:#00ff99;margin-top:0;">
+Nifty Market Edge
+</h3>
+
+<p style="color:white;">
+Professional Quantitative Trading Analytics Dashboard
+</p>
+
+<p style="color:#d9d9d9;">
+2015–2026 | 3826 Trades | Multi-Year Performance Analysis
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 st.markdown("---")
 
 # ==========================
