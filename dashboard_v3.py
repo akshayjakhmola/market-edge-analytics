@@ -35,6 +35,11 @@ st.sidebar.title(
 
 st.sidebar.markdown("---")
 
+index_type = st.radio(
+    "Select Index",
+    ["NIFTY", "BANKNIFTY"]
+)
+
 st.sidebar.success(
     "Professional Trading Analytics Dashboard"
 )
