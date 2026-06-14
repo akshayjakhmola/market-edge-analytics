@@ -164,7 +164,7 @@ box-shadow:0px 4px 15px rgba(0,0,0,0.3);
 </h1>
 
 <h3 style="color:#00ff99;margin-top:0;">
-Nifty Market Edge
+Strategy : Nifty Market Edge
 </h3>
 
 <p style="color:white;">
