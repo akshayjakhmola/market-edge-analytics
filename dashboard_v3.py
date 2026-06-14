@@ -6,28 +6,7 @@ st.set_page_config(
     page_title="Supertrend Dashboard",
     layout="wide"
 )
-# ==========================
-# SIDEBAR BRANDING
-# ==========================
 
-st.sidebar.image(
-    "logo.png",
-    use_container_width=True
-)
-
-st.sidebar.title(
-    "Market Edge Analytics"
-)
-
-st.sidebar.caption(
-    "Nifty Market Edge"
-)
-
-st.sidebar.markdown("---")
-
-st.sidebar.success(
-    "Professional Trading Analytics Dashboard"
-)
 st.caption(
     "| Zerodha Historical Data Based |"
 )
