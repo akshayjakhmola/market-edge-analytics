@@ -386,6 +386,7 @@ trades["Year"] = (
     trades["Exit Time"].dt.year
 )
 
+
 yearly = (
     trades.groupby("Year")
     .agg({
@@ -395,6 +396,37 @@ yearly = (
     .reset_index()
 )
 
+trade_count = (
+    trades.groupby("Year")
+    .size()
+    .reset_index(name="Trades")
+)
+
+yearly = yearly.merge(
+    trade_count,
+    on="Year"
+)
+yearly["Return %"] = round(
+    (yearly["PnL INR"] / capital) * 100,
+    2
+)
+
+yearly["Avg PnL/Trade"] = round(
+    yearly["PnL INR"] / yearly["Trades"],
+    2
+)
+
+yearly = yearly[
+    [
+        "Year",
+        "Trades",
+        "PnL INR",
+        "Return %",
+        "Avg PnL/Trade",
+        "Points"
+    ]
+]
+
 st.dataframe(
     yearly,
     use_container_width=True
@@ -403,8 +435,13 @@ st.dataframe(
 fig_year = px.bar(
     yearly,
     x="Year",
-    y="PnL INR",
-    title="Year-wise Profit"
+    y="Return %",
+    hover_data=[
+        "Trades",
+        "PnL INR",
+        "Points"
+    ],
+    title="Year-wise Return % (₹1.5L Capital)"
 )
 
 st.plotly_chart(
@@ -412,6 +449,7 @@ st.plotly_chart(
     use_container_width=True,
     key="yearly_chart"
 )
+
 st.subheader("🥧 Year-wise Profit Contribution")
 
 fig_year_pie = px.pie(
