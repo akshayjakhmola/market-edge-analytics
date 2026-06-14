@@ -421,7 +421,7 @@ st.subheader("📉 Drawdown Curve")
 fig_dd = px.line(
     drawdown_curve,
     x="Trade No",
-    y="Drawdown %",
+    y="Drawdown",
     title="Drawdown Over Time"
 )
 fig_dd.update_traces(
