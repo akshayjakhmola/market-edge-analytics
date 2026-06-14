@@ -561,9 +561,8 @@ st.plotly_chart(
 # MONTHLY PERFORMANCE
 # ==========================
 
-st.markdown("---")
-
 st.subheader("📅 Monthly Performance")
+
 st.dataframe(
     monthly,
     use_container_width=True
@@ -573,93 +572,13 @@ fig_month = px.bar(
     monthly,
     x="Month",
     y="PnL INR",
-    hover_data=[
-        "Trades",
-        "PnL INR",
-        "Avg PnL/Trade",
-        "Points"
-    ],
-    title="Monthly Return % (₹1.5L Capital)"
+    title="Monthly Profit Analysis"
 )
-avg_monthly = monthly["PnL INR"].mean()
-
-
 
 st.plotly_chart(
     fig_month,
     use_container_width=True,
     key="monthly_chart"
-)
-
-best_month_return = monthly.loc[
-    monthly["Return %"].idxmax()
-]
-
-worst_month_return = monthly.loc[
-    monthly["Return %"].idxmin()
-]
-
-c1, c2, c3, c4, c5 = st.columns(5)
-
-c1.metric(
-    "Best Month",
-    best_month_return["Month"]
-)
-
-c2.metric(
-    "Best Return %",
-    f'{best_month_return["Return %"]}%'
-)
-
-c3.metric(
-    "Worst Month",
-    worst_month_return["Month"]
-)
-
-c4.metric(
-    "Worst Return %",
-    f'{worst_month_return["Return %"]}%'
-)
-
-c5.metric(
-    "Avg Monthly Profit",
-    f"₹{avg_monthly:,.0f}"
-)
-profitable_months = len(
-    monthly[monthly["PnL INR"] > 0]
-)
-
-losing_months = len(
-    monthly[monthly["PnL INR"] <= 0]
-)
-
-total_months = len(monthly)
-
-monthly_win_rate = round(
-    (profitable_months / total_months) * 100,
-    2
-)
-
-c1, c2, c3, c4 = st.columns(4)
-
-c1.metric(
-    "Total Months",
-    total_months
-)
-
-c2.metric(
-    "Profitable Months",
-    profitable_months
-)
-
-c3.metric(
-    "Losing Months",
-    losing_months
-)
-
-c4.metric(
-    "Monthly Win Rate",
-    f"{monthly_win_rate}%"
 )
 # ==========================
 # COST ANALYSIS
