@@ -335,7 +335,9 @@ fig_dd = px.line(
     y="Drawdown",
     title="Drawdown Over Time"
 )
-
+fig_dd.update_traces(
+    line_color="red"
+)
 st.plotly_chart(
     fig_dd,
     use_container_width=True,
