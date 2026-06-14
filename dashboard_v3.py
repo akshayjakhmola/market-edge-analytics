@@ -33,6 +33,9 @@ st.sidebar.title(
     "Market Edge Analytics"
 )
 
+st.sidebar.title(
+    "Market Edge Analytics"
+)
 
 st.sidebar.markdown("---")
 
