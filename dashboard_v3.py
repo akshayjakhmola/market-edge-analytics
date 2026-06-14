@@ -420,7 +420,7 @@ st.subheader("📉 Drawdown Curve")
 
 fig_dd = px.line(
     drawdown_curve,
-    x="Trade No",
+    x="Trade",
     y="Drawdown",
     title="Drawdown Over Time"
 )
