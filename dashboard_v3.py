@@ -102,6 +102,12 @@ tv_report["Entry Time"] = pd.to_datetime(
 tv_report["Year"] = (
     tv_report["Entry Time"].dt.year
 )
+
+total_candles = len(pd.read_csv(
+    "data/nifty_5min_all.csv"
+)) if index_type == "NIFTY" else len(pd.read_csv(
+    "data/banknifty_5min_all.csv"
+))
 # ==========================
 # CALCULATIONS
 # ==========================
@@ -325,7 +331,7 @@ st.write(
 
     Period : 2015 - 2026
 
-    Candles : 211,213
+    Candles : {total_candles:,}
 
     Strategy : {strategy_name}
     """
@@ -335,7 +341,7 @@ c1, c2, c3, c4 = st.columns(4)
 
 c1.metric("Years Tested", "11+")
 
-c2.metric("Candles", "211,213")
+c2.metric("Candles", f"{total_candles:,}")
 
 c3.metric("Trades", f"{total_trades:,}")
 
