@@ -949,17 +949,22 @@ st.markdown("---")
 st.subheader("🏆 Strategy Verdict")
 
 st.success(
-    """
+    f"""
     Backtest Status : PASSED
+
+    Strategy : {strategy_name}
 
     Years Tested : 2015-2026
 
-    Total Trades : 3826
+    Total Trades : {total_trades:,}
 
-    Profit Factor : 1.22 After Cost
+    Profit Factor : {profit_factor}
 
-    Max Drawdown : 7.12%
+    Max Drawdown : {max_dd_pct}%
 
+    Net Profit : ₹{net_profit:,.0f}
+
+    Win Rate : {win_rate}%
     """
 )
 st.markdown("---")
