@@ -17,7 +17,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.caption(
-    "| Zerodha Historical Data Based |"
+    "|| Zerodha Historical Data Based ||"
 )
 
 # ==========================
