@@ -973,7 +973,7 @@ st.markdown(
     </h4>
 
     <p style='color:gray;'>
-    Nifty Market Edge | Advanced Backtesting & Performance Analytics
+    Advanced Backtesting & Performance Analytics
     </p>
 
     <p style='font-size:12px; color:gray;'>
