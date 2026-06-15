@@ -315,12 +315,10 @@ st.dataframe(
 # STRATEGY INFO
 # ==========================
 
-st.markdown("---")
-
 st.subheader("Strategy Information")
 
 st.write(
-    """
+    f"""
     Data Source : Zerodha
 
     Timeframe : 5 Minute
@@ -329,65 +327,19 @@ st.write(
 
     Candles : 211,213
 
-    Strategy : Nifty Market Edge
+    Strategy : {strategy_name}
     """
 )
-c1, c2, c3, c4 = st.columns(4)
-
-c1.metric(
-    "Years Tested",
-    "11+"
-)
-
-c2.metric(
-    "Candles",
-    "211,213"
-)
-
-c3.metric(
-    "Trades",
-    "3,826"
-)
-
-c4.metric(
-    "Recovery Factor",
-    "14.01"
-)
-
-st.markdown("---")
 
 c1, c2, c3, c4 = st.columns(4)
 
-c1.metric(
-    "Gross Profit",
-    f"₹{gross_profit:,.0f}"
-)
+c1.metric("Years Tested", "11+")
 
-c2.metric(
-    "Gross Loss",
-    f"₹{gross_loss:,.0f}"
-)
+c2.metric("Candles", "211,213")
 
-c3.metric(
-    "After Cost Profit",
-    "₹18.99L"
-)
+c3.metric("Trades", f"{total_trades:,}")
 
-c4.metric(
-    "Recovery Factor",
-    "14.01"
-)
-c1, c2 = st.columns(2)
-
-c1.metric(
-    "Largest Win",
-    f"₹{largest_win:,.0f}"
-)
-
-c2.metric(
-    "Largest Loss",
-    f"₹{largest_loss:,.0f}"
-)
+c4.metric("Recovery Factor", round(net_profit/max_dd,2))
 # ==========================
 # EQUITY CURVE
 # ==========================
