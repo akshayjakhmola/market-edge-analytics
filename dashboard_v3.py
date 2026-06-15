@@ -373,23 +373,12 @@ st.plotly_chart(
 
 st.subheader("📉 Drawdown Curve")
 
-if index_type == "NIFTY":
-
-    fig_dd = px.line(
-        drawdown_curve,
-        x="Trade",
-        y="Drawdown",
-        title="Drawdown Over Time"
-    )
-
-else:
-
-    fig_dd = px.line(
-        drawdown_curve,
-        x="Trade No",
-        y="Drawdown",
-        title="Drawdown Over Time"
-    )
+fig_dd = px.line(
+    drawdown_curve,
+    x="Trade",
+    y="Drawdown",
+    title="Drawdown Over Time"
+)
 
 fig_dd.update_traces(line_color="red")
 
