@@ -37,7 +37,8 @@ st.sidebar.markdown("---")
 
 index_type = st.radio(
     "Select Portfolio",
-    ["NIFTY", "BANKNIFTY", "COMBINED"]
+    ["NIFTY", "BANKNIFTY", "COMBINED"],
+    horizontal=True
 )
 
 st.sidebar.success(
@@ -1022,11 +1023,6 @@ st.info(
     """
 )
 
-raw_profit = 2397167.50
-
-cost_profit = 1899787.50
-
-impact = raw_profit - cost_profit
 
 c1, c2, c3 = st.columns(3)
 
@@ -1063,49 +1059,47 @@ st.markdown("---")
 st.subheader("📋 Cost Model Summary")
 
 st.warning(
-    """
+    f"""
     Assumptions Used in Cost Adjusted Backtest
 
-    • Entry Slippage     : 1 Point
+    • Cost Model           : {cost_per_trade_pct}% Per Trade
 
-    • Exit Slippage      : 1 Point
+    • Total Trades         : {total_trades:,}
 
-    • Total Slippage     : 2 Points Per Trade
+    • Total Cost Impact    : ₹{impact:,.0f}
 
-    • Total Trades       : 3,826
+    • Raw Profit           : ₹{raw_profit:,.0f}
 
-    • Total Cost Impact  : ₹4,97,380
+    • After Cost Profit    : ₹{cost_profit:,.0f}
 
-    • Profit Factor Raw  : 1.28
-
-    • Profit Factor Cost Adjusted : 1.22
+    • Strategy             : {strategy_name}
 
     Note:
-    Brokerage, STT, Exchange Charges,
-    GST, SEBI Charges and Stamp Duty
-    are currently NOT included.
+    Cost values are calculated dynamically
+    based on the selected portfolio.
     """
 )
+
 c1, c2, c3, c4 = st.columns(4)
 
 c1.metric(
-    "Entry Slippage",
-    "1 Point"
+    "Cost Model",
+    f"{cost_per_trade_pct}%"
 )
 
 c2.metric(
-    "Exit Slippage",
-    "1 Point"
+    "Total Trades",
+    f"{total_trades:,}"
 )
 
 c3.metric(
     "Cost Impact",
-    "₹4.97L"
+    f"₹{impact:,.0f}"
 )
 
 c4.metric(
-    "PF After Cost",
-    "1.22"
+    "After Cost",
+    f"₹{cost_profit:,.0f}"
 )
 # ==========================
 # TRADE EXPLORER
