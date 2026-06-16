@@ -1353,14 +1353,6 @@ st.markdown(
     📊 Market Edge Analytics
     </h4>
 
-    <p style='color:gray;'>
-    Advanced Backtesting & Performance Analytics
-    </p>
-
-    <p style='font-size:12px; color:gray;'>
-    Historical Market Data | Quantitative Research Dashboard
-    </p>
-
     </div>
     """,
     unsafe_allow_html=True
