@@ -283,7 +283,7 @@ avg_loser = round(
 )
 # Drawdown
 
-equity = trades["Cumulative PnL INR"]
+equity = 150000 + trades["Cumulative PnL INR"]
 
 running_peak = equity.cummax()
 
@@ -516,21 +516,45 @@ with tab3:
     
     st.subheader("📉 Drawdown Curve")
     
+    dd_df = trades.copy()
+    
+    dd_df["Account Equity"] = (
+        150000 +
+        dd_df["Cumulative PnL INR"]
+    )
+    
+    dd_df["Running Peak"] = (
+        dd_df["Account Equity"]
+        .cummax()
+    )
+    
+    dd_df["Drawdown INR"] = (
+        dd_df["Account Equity"]
+        -
+        dd_df["Running Peak"]
+    )
+    
+    dd_df["Trade No"] = range(
+        1,
+        len(dd_df) + 1
+        )
+    
     fig_dd = px.line(
-    drawdown_curve,
-    x="Trade",
-    y="Drawdown",
-    title="Drawdown Over Time"
-)
+        dd_df,
+        x="Trade No",
+        y="Drawdown INR",
+        title="Account Equity Drawdown"
+        )
     
     fig_dd.update_traces(
-    line_color="red"
-)
+        line_color="red"
+    )
     
     st.plotly_chart(
-    fig_dd,
-    use_container_width=True
-)
+        fig_dd,
+        use_container_width=True,
+        key="risk_drawdown_curve"
+    )
     
 with tab4:
 
@@ -596,10 +620,7 @@ with tab7:
 
     dd_view = st.selectbox(
         "Drawdown Analysis Type",
-        [
-            "Full Equity",
-            "Yearly"
-        ]
+        ["Full Equity", "Yearly"]
     )
 
     equity_df = equity_curve.copy()
@@ -607,6 +628,7 @@ with tab7:
     equity_df["Exit Time"] = pd.to_datetime(
         equity_df["Exit Time"]
     )
+
     equity_df["Hover Time"] = (
         equity_df["Exit Time"]
         .dt.strftime("%d-%b-%Y %I:%M %p")
@@ -617,19 +639,8 @@ with tab7:
         selected_year = st.selectbox(
             "Select Year",
             sorted(
-                equity_df["Exit Time"]
-                .dt.year
-                .unique()
-                .tolist()
-            ),
-            index=len(
-                sorted(
-                    equity_df["Exit Time"]
-                    .dt.year
-                    .unique()
-                    .tolist()
-                )
-            ) - 1
+                equity_df["Exit Time"].dt.year.unique()
+            )
         )
 
         equity_df = equity_df[
@@ -637,27 +648,27 @@ with tab7:
             == selected_year
         ]
 
-    equity_df["Running Peak"] = (
+    equity_df["Account Equity"] = (
+        150000 +
         equity_df["Cumulative PnL INR"]
+    )
+
+    equity_df["Running Peak"] = (
+        equity_df["Account Equity"]
         .cummax()
     )
 
     equity_df["Drawdown INR"] = (
-        equity_df["Cumulative PnL INR"]
+        equity_df["Account Equity"]
         -
         equity_df["Running Peak"]
     )
 
     equity_df["Drawdown %"] = (
-        equity_df["Drawdown INR"]
+        abs(equity_df["Drawdown INR"])
         /
         equity_df["Running Peak"]
-    ) * 100
-    
-    equity_df.loc[
-        equity_df["Running Peak"] < 50000,
-        "Drawdown %"
-    ] = None
+        ) * 100
 
     c1, c2, c3 = st.columns(3)
 
@@ -699,7 +710,7 @@ with tab7:
         equity_df[
             [
                 "Exit Time",
-                "Cumulative PnL INR",
+                "Account Equity",
                 "Running Peak",
                 "Drawdown INR",
                 "Drawdown %"
@@ -721,11 +732,12 @@ with tab7:
         customdata=equity_df[
             [
                 "Hover Time",
-                "Cumulative PnL INR",
+                "Account Equity",
                 "Running Peak",
                 "Drawdown %",
             ]
         ].values,
+
         hovertemplate=
         "<b>Exit Time:</b> %{customdata[0]}<br>" +
         "<b>Equity:</b> ₹%{customdata[1]:,.0f}<br>" +
@@ -745,7 +757,8 @@ with tab7:
 
     st.plotly_chart(
         fig_dd_pro,
-        use_container_width=True
+        use_container_width=True,
+        key="drawdown_pro_chart"
     )
 
     st.subheader("🏆 Top 10 Worst Drawdowns")
@@ -762,7 +775,7 @@ with tab7:
         top_dd[
             [
                 "Exit Time",
-                "Cumulative PnL INR",
+                "Account Equity",
                 "Running Peak",
                 "Drawdown INR",
                 "Drawdown %"
@@ -955,21 +968,85 @@ st.plotly_chart(
 
 st.subheader("📉 Drawdown Curve")
 
-fig_dd = px.line(
-    drawdown_curve,
-    x="Trade",
-    y="Drawdown",
-    title="Drawdown Over Time"
+dd_df = trades.copy()
+
+dd_df["Account Equity"] = (
+    150000 +
+    dd_df["Cumulative PnL INR"]
 )
 
-fig_dd.update_traces(line_color="red")
+dd_df["Running Peak"] = (
+    dd_df["Account Equity"]
+    .cummax()
+)
+
+dd_df["Drawdown INR"] = (
+    dd_df["Account Equity"]
+    -
+    dd_df["Running Peak"]
+)
+
+dd_df["Trade No"] = range(
+    1,
+    len(dd_df) + 1
+)
+
+fig_dd = px.line(
+    dd_df,
+    x="Trade No",
+    y="Drawdown INR",
+    title="Account Equity Drawdown"
+)
+
+fig_dd.update_traces(
+    line_color="red"
+)
 
 st.plotly_chart(
     fig_dd,
     use_container_width=True,
-    key="drawdown_curve"
+    key="main_drawdown_curve"
 )
 
+st.subheader("📊 Equity vs Peak")
+
+dd_df["Equity Change"] = (
+    dd_df["Account Equity"]
+    .diff()
+    .fillna(0)
+)
+
+dd_df["Equity Change"] = (
+    dd_df["Account Equity"]
+    .diff()
+    .fillna(0)
+)
+
+dd_df["Color"] = dd_df["Equity Change"].apply(
+    lambda x: "Profit" if x >= 0 else "Loss"
+)
+
+fig_dev = px.bar(
+    dd_df,
+    x="Trade No",
+    y="Equity Change",
+    color="Color",
+    color_discrete_map={
+        "Profit": "green",
+        "Loss": "red"
+    },
+    title="Profit & Loss Per Trade"
+)
+
+fig_dev.update_layout(
+    showlegend=False
+)
+
+st.plotly_chart(
+    fig_dev,
+    use_container_width=True,
+    key="equity_vs_peak"
+)
 # ==========================
 # TRADE STATS
 # ==========================
