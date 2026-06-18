@@ -410,13 +410,14 @@ c4.metric("Profit Factor", profit_factor)
 # HEADER
 # ==========================
 from datetime import datetime
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "📊 Overview",
     "📈 Performance",
     "⚠️ Risk",
     "📋 Trades",
     "💰 Cost",
-    "📥 Downloads"
+    "📥 Downloads",
+    "⚠️ Drawdown Analytics Pro"
 ])
 
 with tab1:
@@ -471,6 +472,8 @@ with tab2:
         fig,
         use_container_width=True
     )
+    st.markdown("---")
+
 
 with tab3:
 
@@ -586,6 +589,208 @@ with tab6:
     mime="text/csv",
     key="download_tab6"
 )
+    
+with tab7:
+
+    st.subheader("⚠️ Drawdown Analytics Pro")
+
+    dd_view = st.selectbox(
+        "Drawdown Analysis Type",
+        [
+            "Full Equity",
+            "Yearly"
+        ]
+    )
+
+    equity_df = equity_curve.copy()
+
+    equity_df["Exit Time"] = pd.to_datetime(
+        equity_df["Exit Time"]
+    )
+    equity_df["Hover Time"] = (
+        equity_df["Exit Time"]
+        .dt.strftime("%d-%b-%Y %I:%M %p")
+    )
+
+    if dd_view == "Yearly":
+
+        selected_year = st.selectbox(
+            "Select Year",
+            sorted(
+                equity_df["Exit Time"]
+                .dt.year
+                .unique()
+                .tolist()
+            ),
+            index=len(
+                sorted(
+                    equity_df["Exit Time"]
+                    .dt.year
+                    .unique()
+                    .tolist()
+                )
+            ) - 1
+        )
+
+        equity_df = equity_df[
+            equity_df["Exit Time"].dt.year
+            == selected_year
+        ]
+
+    equity_df["Running Peak"] = (
+        equity_df["Cumulative PnL INR"]
+        .cummax()
+    )
+
+    equity_df["Drawdown INR"] = (
+        equity_df["Cumulative PnL INR"]
+        -
+        equity_df["Running Peak"]
+    )
+
+    equity_df["Drawdown %"] = (
+        equity_df["Drawdown INR"]
+        /
+        equity_df["Running Peak"]
+    ) * 100
+    
+    equity_df.loc[
+        equity_df["Running Peak"] < 50000,
+        "Drawdown %"
+    ] = None
+
+    c1, c2, c3 = st.columns(3)
+
+    max_dd_inr = abs(
+        equity_df["Drawdown INR"].min()
+    )
+    
+    max_equity = (
+        equity_df["Running Peak"].max()
+    )
+    
+    max_dd_pct = round(
+        (
+            abs(equity_df["Drawdown INR"].min())
+            /
+            equity_df["Running Peak"].max()
+        ) * 100,
+        2
+    )
+
+    c1.metric(
+        "Max DD ₹",
+        f"₹{abs(equity_df['Drawdown INR'].min()):,.0f}"
+    )
+
+    c2.metric(
+    "Max DD %",
+    f"{max_dd_pct:.2f}%"
+)
+
+    c3.metric(
+        "Equity Peak",
+        f"₹{equity_df['Running Peak'].max():,.0f}"
+    )
+
+    st.subheader("📋 Drawdown Records")
+
+    st.dataframe(
+        equity_df[
+            [
+                "Exit Time",
+                "Cumulative PnL INR",
+                "Running Peak",
+                "Drawdown INR",
+                "Drawdown %"
+            ]
+        ],
+        use_container_width=True
+    )
+
+    st.subheader("📉 Drawdown INR Chart")
+
+    fig_dd_pro = px.line(
+        equity_df,
+        x="Exit Time",
+        y="Drawdown INR",
+        title="Drawdown INR Analysis"
+    )
+
+    fig_dd_pro.update_traces(
+        customdata=equity_df[
+            [
+                "Hover Time",
+                "Cumulative PnL INR",
+                "Running Peak",
+                "Drawdown %",
+            ]
+        ].values,
+        hovertemplate=
+        "<b>Exit Time:</b> %{customdata[0]}<br>" +
+        "<b>Equity:</b> ₹%{customdata[1]:,.0f}<br>" +
+        "<b>Peak Equity:</b> ₹%{customdata[2]:,.0f}<br>" +
+        "<b>Drawdown ₹:</b> ₹%{y:,.0f}<br>" +
+        "<b>Drawdown %:</b> %{customdata[3]:.2f}%<br>" +
+        "<extra></extra>"
+    )
+    
+    fig_dd_pro.update_xaxes(
+        hoverformat="%d-%b-%Y %H:%M"
+    )
+
+    fig_dd_pro.update_traces(
+        line_color="red"
+    )
+
+    st.plotly_chart(
+        fig_dd_pro,
+        use_container_width=True
+    )
+
+    st.subheader("🏆 Top 10 Worst Drawdowns")
+
+    top_dd = (
+        equity_df
+        .sort_values(
+            "Drawdown INR"
+        )
+        .head(10)
+    )
+
+    st.dataframe(
+        top_dd[
+            [
+                "Exit Time",
+                "Cumulative PnL INR",
+                "Running Peak",
+                "Drawdown INR",
+                "Drawdown %"
+            ]
+        ],
+        use_container_width=True
+    )
+
+    worst_dd = top_dd.iloc[0]
+
+    st.subheader("🎯 Worst Drawdown Summary")
+
+    c1, c2, c3 = st.columns(3)
+
+    c1.metric(
+        "Worst DD ₹",
+        f"₹{abs(worst_dd['Drawdown INR']):,.0f}"
+    )
+
+    c2.metric(
+        "Worst DD %",
+        f"{abs(worst_dd['Drawdown %']):.2f}%"
+    )
+
+    c3.metric(
+        "Bottom Date",
+        str(worst_dd["Exit Time"])[:10]
+    )
 
 st.markdown(
     f"""
@@ -1352,6 +1557,7 @@ st.markdown(
     <h4 style='margin-bottom:5px;'>
     📊 Market Edge Analytics
     </h4>
+
 
     </div>
     """,
