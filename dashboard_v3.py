@@ -34,7 +34,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.caption(
-    "| Zerodha Historical Data Based |"
+    ""
 )
 st.markdown(
     """
@@ -58,7 +58,7 @@ st.markdown(
     color:#00E676;
     margin-top:0;
     ">
-    Institutional Grade Backtesting Dashboard
+    Institutional Grade Backtesting Dashboard : By Akshay Jakhmola
     </h3>
 
     <p style="
@@ -935,7 +935,6 @@ st.subheader("Strategy Information")
 
 st.write(
     f"""
-    Data Source : Zerodha
 
     Timeframe : 5 Minute
 
@@ -1746,5 +1745,6 @@ st.markdown("""
     <h3>✨ Welcome to Our Platform</h3>
     <p>Monitor • Analyze • Optimize</p>
     <p>Empowering smarter decisions with modern technology.</p>
+    <p>By Akshay Jakhmola</p>
 </div>
 """, unsafe_allow_html=True)
