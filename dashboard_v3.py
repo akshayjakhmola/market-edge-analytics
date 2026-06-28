@@ -72,7 +72,7 @@ st.markdown(
     color:white;
     margin-bottom:10px;
     ">
-    🚀 Market Edge Analytics
+    PREPARED FOR Mr. LUCKY GANGWAL
     </h1>
 
     <h3 style="
