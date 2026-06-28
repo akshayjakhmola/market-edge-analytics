@@ -966,7 +966,7 @@ with tab4:
 
     st.markdown("---")
 
-    st.subheader("🏆 Top 20 Winners")
+    st.subheader("🟢 Top 20 Winners")
 
     top_winners = (
         trades.sort_values(
@@ -982,7 +982,7 @@ with tab4:
 
     st.markdown("---")
 
-    st.subheader("⚠️ Top 20 Losers")
+    st.subheader("🔴 Top 20 Losers")
 
     top_losers = (
         trades.sort_values(
