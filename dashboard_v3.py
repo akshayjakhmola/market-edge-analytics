@@ -72,7 +72,7 @@ st.markdown(
     color:white;
     margin-bottom:10px;
     ">
-    PREPARED FOR Mr.LUCKY GANGWAL
+    PREPARED FOR Mr. LUCKY GANGWAL
     </h1>
 
     <h3 style="
