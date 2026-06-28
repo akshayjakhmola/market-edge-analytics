@@ -400,6 +400,7 @@ impact = (
 ).sum()
 
 cost_profit = raw_profit - impact
+cost_efficiency = (cost_profit / raw_profit) * 100
 
 
 ticker_text = (
@@ -677,21 +678,71 @@ with tab5:
 
     st.subheader("💰 Cost Analysis")
 
-    st.info(
-    f"""
-    Cost Model : {cost_per_trade_pct}% Per Trade
+    st.markdown(f"""
+    <div style="
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    padding:22px;
+    border-radius:16px;
+    border-left:6px solid #22c55e;
+    margin-bottom:20px;
+    box-shadow:0 0 15px rgba(34,197,94,.15);
+    ">
 
-    Total Trades : {total_trades:,}
+    <h3 style="color:white;margin-top:0;">
+    💰 Cost Analysis Summary
+    </h3>
 
-    Raw Profit : ₹{raw_profit:,.0f}
+    <table style="width:100%;color:#e2e8f0;font-size:16px;line-height:2.1;">
 
-    Total Cost Impact : ₹{impact:,.0f}
+    <tr>
+    <td>📊 Cost Model</td>
+    <td><b>{cost_per_trade_pct}% Per Trade</b></td>
+    </tr>
 
-    After Cost Profit : ₹{cost_profit:,.0f}
-    """
-)
+    <tr>
+    <td>📈 Total Trades</td>
+    <td><b>{total_trades:,}</b></td>
+    </tr>
 
-    c1, c2, c3 = st.columns(3)
+    <tr>
+    <td>💰 Raw Profit</td>
+    <td><b>₹{raw_profit:,.0f}</b></td>
+    </tr>
+
+    <tr>
+    <td>💸 Total Cost Impact</td>
+    <td><b>₹{impact:,.0f}</b></td>
+    </tr>
+
+    <tr>
+    <td>✅ Net Profit After Cost</td>
+    <td><b>₹{cost_profit:,.0f}</b></td>
+    </tr>
+
+    </table>
+
+    <hr style="border:1px solid rgba(255,255,255,.12);">
+
+    <p style="color:#d1fae5;font-size:15px;line-height:1.9;margin:0;">
+
+    💡 <b>Cost Impact Analysis</b><br><br>
+
+    <b>Cost Reduced Profitability</b><br>
+    = (Total Cost Impact ÷ Raw Profit) × 100<br>
+    = (₹{impact:,.0f} ÷ ₹{raw_profit:,.0f}) × 100<br>
+    = <b>{(impact/raw_profit)*100:.2f}%</b><br><br>
+
+    <b>Profit Retained After Cost</b><br>
+    = (Net Profit After Cost ÷ Raw Profit) × 100<br>
+    = (₹{cost_profit:,.0f} ÷ ₹{raw_profit:,.0f}) × 100<br>
+    = <b>{(cost_profit/raw_profit)*100:.2f}%</b>
+
+    </p>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    c1, c2, c3, c4 = st.columns(4)
 
     c1.metric(
         "Raw Profit",
@@ -699,7 +750,7 @@ with tab5:
     )
 
     c2.metric(
-        "After Slippage",
+        "Net Profit After Cost",
         f"₹{cost_profit:,.0f}"
     )
 
@@ -708,19 +759,72 @@ with tab5:
         f"₹{impact:,.0f}"
     )
 
+    c4.metric(
+        "Cost Efficiency",
+        f"{cost_efficiency:.2f}%"
+    )
+
 with tab6:
 
     st.subheader("📥 Download Center")
 
+    st.markdown(f"""
+    <div style="
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    padding:22px;
+    border-radius:16px;
+    border-left:6px solid #3b82f6;
+    margin-bottom:20px;
+    box-shadow:0 0 15px rgba(59,130,246,.15);
+    ">
+
+    <h3 style="color:white;margin-top:0;">
+    📂 Export Trade Reports
+    </h3>
+
+    <table style="width:100%;color:#e2e8f0;font-size:16px;line-height:2.0;">
+
+    <tr>
+    <td>📈 Strategy</td>
+    <td><b>{strategy_name}</b></td>
+    </tr>
+
+    <tr>
+    <td>📊 Total Trades</td>
+    <td><b>{total_trades:,}</b></td>
+    </tr>
+
+    <tr>
+    <td>📅 Backtest Period</td>
+    <td><b>2015 – 2026</b></td>
+    </tr>
+
+    <tr>
+    <td>📄 File Format</td>
+    <td><b>CSV</b></td>
+    </tr>
+
+    </table>
+
+    <hr style="border:1px solid rgba(255,255,255,.12);">
+
+    <p style="color:#dbeafe;font-size:15px;margin:0;">
+    Export the complete trade history for further analysis in Excel, Power BI or Python.
+    </p>
+
+    </div>
+    """, unsafe_allow_html=True)
+
     csv = tv_report.to_csv(index=False)
 
     st.download_button(
-    label="📥 Download Detailed Trade Log",
-    data=csv,
-    file_name=f"{strategy_name}_Trade_Log.csv",
-    mime="text/csv",
-    key="download_tab6"
-)
+        label="📥 Download Detailed Trade Log",
+        data=csv,
+        file_name=f"{strategy_name}_Trade_Log.csv",
+        mime="text/csv",
+        key="download_tab6",
+        use_container_width=True
+    )
     
 with tab7:
 
@@ -2189,15 +2293,83 @@ st.dataframe(
 # DOWNLOAD CENTER
 # ==========================
 
-st.subheader("📥 Download Center")
+st.subheader("📦 Export Backtest Data")
+
+st.markdown(f"""
+<div style="
+background:linear-gradient(135deg,#161b22,#22272e);
+padding:28px;
+border-radius:18px;
+border-left:6px solid #f59e0b;
+margin-bottom:20px;
+box-shadow:0 0 18px rgba(245,158,11,.18);
+">
+
+<h3 style="color:white;margin-top:0;">
+📦 Export Complete Backtest Report
+</h3>
+
+<p style="
+color:#d1d5db;
+font-size:16px;
+line-height:1.8;
+">
+
+Download the complete backtest trade history for detailed analysis, reporting and further research.
+
+</p>
+
+<table style="
+width:100%;
+color:#e5e7eb;
+font-size:15px;
+line-height:2.0;
+">
+
+<tr>
+<td>✅ Complete Trade Log</td>
+<td>📈 Entry & Exit Details</td>
+</tr>
+
+<tr>
+<td>✅ Trade Direction</td>
+<td>💰 PnL & Points</td>
+</tr>
+
+<tr>
+<td>✅ Excel Compatible</td>
+<td>🐍 Python / Power BI Ready</td>
+</tr>
+
+</table>
+
+<hr style="border:1px solid rgba(255,255,255,.10);">
+
+<p style="
+color:#9ca3af;
+font-size:14px;
+margin:0;
+">
+
+<b>Export Format:</b> CSV
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<b>Strategy:</b> {strategy_name}
+
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 
 csv = tv_report.to_csv(index=False)
 
 st.download_button(
-    label="📥 Download Detailed Trade Log",
+    "📥 Download Complete Trade Log",
     data=csv,
     file_name=f"{strategy_name}_Trade_Log.csv",
     mime="text/csv",
+    use_container_width=True,
     key="download_old"
 )
 # ==========================
