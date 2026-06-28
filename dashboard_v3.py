@@ -2028,6 +2028,10 @@ trade_type = st.selectbox(
 
 filtered = tv_report.copy()
 
+filtered["Exit Time"] = pd.to_datetime(filtered["Exit Time"])
+filtered["Year"] = filtered["Exit Time"].dt.year
+
+
 if selected_year != "ALL":
     filtered = filtered[
         filtered["Year"] == selected_year
