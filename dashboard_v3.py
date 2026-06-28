@@ -86,7 +86,7 @@ st.markdown(
     color:#d1d5db;
     font-size:16px;
     ">
-    NIFTY • BANKNIFTY • Combined Portfolio Analytics
+    NIFTY • BANKNIFTY • Combined Directional Strategy Portfolio Analytics
     </p>
 
     <p style="
@@ -126,7 +126,7 @@ index_type = st.radio(
 )
 
 st.sidebar.success(
-    "NIFTY • BANKNIFTY • Combined Portfolio Analytics"
+    "NIFTY • BANKNIFTY • Combined Directional Strategy Portfolio Analytics"
 )
 # ==========================
 # LOAD DATA
@@ -901,10 +901,104 @@ with tab3:
     
 with tab4:
 
-    st.subheader("📋 Trade Explorer")
+    st.subheader("📋 Trade Explorer Pro")
+
+    trade_search = st.text_input(
+        "🔍 Search Trade",
+        key="tab4_search"
+    )
+
+    filtered = tv_report.copy()
+
+    filtered["Exit Time"] = pd.to_datetime(
+        filtered["Exit Time"]
+    )
+
+    filtered["Year"] = (
+        filtered["Exit Time"].dt.year
+    )
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+        selected_year = st.selectbox(
+            "📅 Select Year",
+            ["ALL"] + sorted(
+                filtered["Year"].unique().tolist()
+            ),
+            key="tab4_year"
+        )
+
+    with c2:
+        trade_type = st.selectbox(
+            "📈 Filter Trade Type",
+            ["ALL", "LONG", "SHORT"],
+            key="tab4_type"
+        )
+
+    if selected_year != "ALL":
+        filtered = filtered[
+            filtered["Year"] == selected_year
+        ]
+
+    if trade_type != "ALL":
+        filtered = filtered[
+            filtered["Type"] == trade_type
+        ]
+
+    if trade_search:
+        filtered = filtered[
+            filtered.astype(str)
+            .apply(
+                lambda row: row.str.contains(
+                    trade_search,
+                    case=False,
+                    na=False
+                ).any(),
+                axis=1
+            )
+        ]
 
     st.dataframe(
-        tv_report,
+        filtered,
+        use_container_width=True
+    )
+
+    st.markdown("---")
+
+    st.subheader("🏆 Top 20 Winners")
+
+    top_winners = (
+        trades.sort_values(
+            "PnL INR",
+            ascending=False
+        ).head(20)
+    )
+
+    st.dataframe(
+        top_winners.style.background_gradient(
+            subset=["PnL INR"],
+            cmap="Greens"
+        ),
+        use_container_width=True
+    )
+
+    st.markdown("---")
+
+    st.subheader("⚠️ Top 20 Losers")
+
+    top_losers = (
+        trades.sort_values(
+            "PnL INR",
+            ascending=True
+        ).head(20)
+    )
+
+    st.dataframe(
+        top_losers.style.background_gradient(
+            subset=["PnL INR"],
+            cmap="Reds_r"
+        ),
         use_container_width=True
     )
 
@@ -1566,8 +1660,6 @@ st.subheader("Strategy Information")
 
 st.write(
     f"""
-
-    Timeframe : 5 Minute
 
     Period : 2015 - 2026
 
@@ -2744,7 +2836,7 @@ st.markdown("""
 </style>
 
 <div class="footer">
-    <h3>✨ BACKTEST RESULT</h3>
+    <h3>✨ DIRECTIONAL STRATEGY BACKTEST RESULT</h3>
     <p>Monitor • Analyze • Optimize</p>
 </div>
 """, unsafe_allow_html=True)
