@@ -207,7 +207,7 @@ elif index_type == "COMBINED":
 
     tv_report = trades.copy()
 
-    strategy_name = "Combined Portfolio"
+    strategy_name = "Combined Directional Portfolio"
 
 if index_type == "NIFTY":
     total_candles = 211213
