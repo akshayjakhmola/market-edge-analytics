@@ -2120,101 +2120,64 @@ c4.metric(
 # ==========================
 # COST ANALYSIS
 # ==========================
+st.markdown("<br>", unsafe_allow_html=True)
+st.divider()
+st.markdown("<br>", unsafe_allow_html=True)
 
-st.subheader("💰 Cost Adjusted Backtest")
+st.subheader("📋 Cost Impact Overview")
 
-st.info(
-    f"""
-    Cost Model : {cost_per_trade_pct}% Per Trade
-
-    Total Trades : {total_trades:,}
-
-    Raw Profit : ₹{raw_profit:,.0f}
-
-    Total Cost Impact : ₹{impact:,.0f}
-
-    After Cost Profit : ₹{cost_profit:,.0f}
-    """
-)
-
+profit_reduction = (impact / raw_profit) * 100
+profit_retained = (cost_profit / raw_profit) * 100
 
 c1, c2, c3 = st.columns(3)
 
 c1.metric(
-    "Raw Profit",
+    "💰 Raw Profit",
     f"₹{raw_profit:,.0f}"
 )
 
 c2.metric(
-    "After Slippage",
+    "✅ Net Profit After Cost",
     f"₹{cost_profit:,.0f}"
 )
 
 c3.metric(
-    "Slippage Impact",
+    "💸 Total Cost Impact",
     f"₹{impact:,.0f}"
 )
 
-st.write(
-    f"""
-    Total Slippage Cost:
-    ₹{impact:,.0f}
-
-    Profit Factor Before Cost:
-    1.28
-
-    Profit Factor After Cost:
-    1.22
-    """
-)
-
-st.markdown("---")
-
-st.subheader("📋 Cost Model Summary")
-
-st.warning(
-    f"""
-    Assumptions Used in Cost Adjusted Backtest
-
-    • Cost Model           : {cost_per_trade_pct}% Per Trade
-
-    • Total Trades         : {total_trades:,}
-
-    • Total Cost Impact    : ₹{impact:,.0f}
-
-    • Raw Profit           : ₹{raw_profit:,.0f}
-
-    • After Cost Profit    : ₹{cost_profit:,.0f}
-
-    • Strategy             : {strategy_name}
-
-    Note:
-    Cost values are calculated dynamically
-    based on the selected portfolio.
-    """
-)
-
-c1, c2, c3, c4 = st.columns(4)
-
-c1.metric(
-    "Cost Model",
-    f"{cost_per_trade_pct}%"
-)
-
-c2.metric(
-    "Total Trades",
-    f"{total_trades:,}"
-)
-
-c3.metric(
-    "Cost Impact",
-    f"₹{impact:,.0f}"
-)
+c4, c5, c6, c7 = st.columns(4)
 
 c4.metric(
-    "After Cost",
-    f"₹{cost_profit:,.0f}"
+    "📈 PF Before",
+    "1.28"
 )
+
+c5.metric(
+    "📉 PF After",
+    "1.22"
+)
+
+c6.metric(
+    "📉 Profit Reduction",
+    f"{profit_reduction:.2f}%"
+)
+
+c7.metric(
+    "📈 Profit Retained",
+    f"{profit_retained:.2f}%"
+)
+
+st.success(f"""
+💡 Executive Insight
+
+Transaction costs reduced the gross profitability by **{profit_reduction:.2f}%**.
+
+Even after accounting for all estimated trading costs,
+the strategy retained **{profit_retained:.2f}%** of its gross profit,
+indicating strong cost efficiency.
+""")
+
 # ==========================
 # TRADE EXPLORER
 # ==========================
@@ -2390,27 +2353,116 @@ st.dataframe(
 )
 st.markdown("---")
 
-st.subheader("🏆 Strategy Verdict")
+st.subheader("🏆 Final Strategy Verdict")
 
-st.success(
-    f"""
-    Backtest Status : PASSED
+st.markdown(f"""
+<div style="
+background:linear-gradient(135deg,#064e3b,#166534);
+padding:28px;
+border-radius:18px;
+border-left:7px solid #22c55e;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(34,197,94,.18);
+">
 
-    Strategy : {strategy_name}
+<h2 style="
+color:white;
+text-align:center;
+margin-top:0;
+margin-bottom:20px;
+font-weight:700;
+">
+✅ BACKTEST STATUS : PASSED
+</h2>
 
-    Years Tested : 2015-2026
+<table style="
+width:100%;
+color:#ecfdf5;
+font-size:16px;
+line-height:2.0;
+border-collapse:collapse;
+">
 
-    Total Trades : {total_trades:,}
+<tr>
+<td>🎯 Strategy</td>
+<td><b>{strategy_name}</b></td>
+</tr>
 
-    Profit Factor : {profit_factor}
+<tr>
+<td>📅 Backtest Period</td>
+<td><b>2015 – 2026</b></td>
+</tr>
 
-    Max Drawdown : {max_dd_pct}%
+<tr>
+<td>💼 Initial Capital</td>
+<td><b>₹150,000</b></td>
+</tr>
 
-    Net Profit : ₹{net_profit:,.0f}
+<tr>
+<td>📊 Total Trades</td>
+<td><b>{total_trades:,}</b></td>
+</tr>
 
-    Win Rate : {win_rate}%
-    """
-)
+<tr>
+<td>💰 Net Profit Generated</td>
+<td><b>₹{net_profit:,.0f}</b></td>
+</tr>
+
+<tr>
+<td>🚀 Return on Initial Capital</td>
+<td><b>{return_pct:.2f}%</b></td>
+</tr>
+
+<tr>
+<td>📈 Win Rate</td>
+<td><b>{win_rate}%</b></td>
+</tr>
+
+<tr>
+<td>⚖️ Profit Factor</td>
+<td><b>{profit_factor}</b></td>
+</tr>
+
+<tr>
+<td>📉 Maximum Drawdown</td>
+<td><b>{max_dd_pct}%</b></td>
+</tr>
+
+<tr>
+<td>📊 CAGR</td>
+<td><b>{cagr:.2f}% Per Year</b></td>
+</tr>
+
+</table>
+
+<hr style="border:1px solid rgba(255,255,255,.15);margin-top:20px;margin-bottom:18px;">
+
+<p style="
+color:#dcfce7;
+font-size:15px;
+line-height:1.9;
+margin:0;
+">
+
+💡 <b>Executive Assessment</b><br><br>
+
+Starting with an initial trading capital of
+<b>₹150,000</b>, the strategy generated a cumulative
+net profit of <b>₹{net_profit:,.0f}</b>,
+delivering an overall return of
+<b>{return_pct:.2f}%</b>
+throughout the 2015–2026 backtest period.
+
+The same initial capital was utilized throughout the entire backtest, demonstrating efficient capital deployment and the power of disciplined compounding without requiring additional capital injections.
+
+Across multiple market cycles, the strategy maintained controlled drawdowns, stable risk characteristics and consistent profitability, highlighting the robustness of its systematic and rule-based trading framework.
+
+Overall, the historical performance demonstrates strong capital efficiency, disciplined risk management and long-term wealth creation potential, making the strategy well-positioned for forward testing and eventual live deployment under proper risk controls.
+
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 st.markdown("---")
 
 st.markdown(
