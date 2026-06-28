@@ -1020,7 +1020,7 @@ Strategy : {strategy_name}
 </h3>
 
 <p style="color:white;">
-Professional Quantitative Trading Analytics Dashboard V4
+Bactesting Analytics Dashboard V4
 </p>
 
 <p style="color:#d9d9d9;">
