@@ -332,9 +332,9 @@ max_dd_pct = round(
     2
 )
 
-recovery_factor = (
-    round(net_profit / max_dd, 2)
-    if max_dd > 0 else 0
+expectancy = (
+    round(net_profit / total_trades, 2)
+    if total_trades > 0 else 0
 )
 
 # Dashboard Metrics
@@ -348,9 +348,9 @@ max_dd_pct = round(
     2
 )
 
-recovery_factor = (
-    round(net_profit / max_dd, 2)
-    if max_dd > 0
+expectancy = (
+    round(net_profit / total_trades, 2)
+    if total_trades > 0
     else 0
 )
 
@@ -534,20 +534,104 @@ with tab1:
 
     st.subheader("📊 Overview")
 
-    st.success(
-        f"Strategy Grade : {strategy_grade}"
-    )
-    st.info(
-    f"""
-    Strategy : {strategy_name}
+    st.markdown(f"""
+    <div style="
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    padding:22px;
+    border-radius:16px;
+    border-left:6px solid #3b82f6;
+    margin-bottom:18px;
+    box-shadow:0 0 15px rgba(59,130,246,.15);
+    ">
 
-    Trades : {total_trades:,}
+    <h3 style="color:white;margin-top:0;">
+    📋 Strategy Snapshot
+    </h3>
 
-    Years Tested : 11+
+    <table style="
+    width:100%;
+    color:#e2e8f0;
+    font-size:16px;
+    line-height:2.0;
+    ">
 
-    Max DD : {max_dd_pct}%
-    """
-)
+    <tr>
+    <td>🎯 Strategy</td>
+    <td><b>{strategy_name}</b></td>
+    </tr>
+
+    <tr>
+    <td>💼 Initial Capital</td>
+    <td><b>₹150,000 <span style="color:#94a3b8;font-size:13px;">(Single Capital Base Used Throughout the Backtest)</span></b></td>
+    </tr>
+
+    <tr>
+    <td>🚀 Wealth Growth</td>
+    <td><b>{return_pct:.2f}% <span style="color:#94a3b8;font-size:13px;">(From ₹150,000 Initial Capital)</span></b></td>
+    </tr>
+
+    <tr>
+    <td>📊 Total Trades</td>
+    <td><b>{total_trades:,}</b></td>
+    </tr>
+
+    <tr>
+    <td>📊 Historical Trade Sample</td>
+    <td><b>{total_trades:,} <span style="color:#94a3b8;font-size:13px;">(Large Statistical Sample)</span></b></td>
+    </tr>
+
+    <tr>
+    <td>⏳ Market Cycles Covered</td>
+    <td><b>11+ Years <span style="color:#94a3b8;font-size:13px;">(Bull, Bear & Sideways Markets)</span></b></td>
+    </tr>
+
+    <tr>
+    <td>📅 Backtest Period</td>
+    <td><b>2015 – 2026 (11+ Years)</b></td>
+    </tr>
+
+    <tr>
+    <td>📉 Maximum Drawdown</td>
+    <td><b>{max_dd_pct}% <span style="color:#94a3b8;font-size:13px;">(Overall Backtest Period)</span></b></td>
+    </tr>
+
+    <tr>
+    <td>🛡️ Risk Management</td>
+    <td><b>Controlled <span style="color:#94a3b8;font-size:13px;">(Capital Efficient Strategy with Long-Term Compounding Potential)</span></b></td>
+    </tr>
+
+    <tr>
+    <td>⚙️ Trading Approach</td>
+    <td><b>100% Rule-Based <span style="color:#94a3b8;font-size:13px;">(No Discretionary Decisions)</span></b></td>
+    </tr>
+
+    <tr> 
+    <td>🛡️ Stress Event Preparedness</td> 
+    <td><b>The maximum historical drawdown was recorded during the extraordinary market volatility surrounding the 2024 Election Results, one of the most challenging stress events in the entire backtest period. This event has been thoroughly analyzed, and a dedicated contingency framework has been established for similar high-impact market situations. The strategy now includes predefined risk-management actions and execution protocols designed to respond in a disciplined and systematic manner during exceptional market conditions, with the objective of improving capital protection and reducing the impact of future stress events.</b></td> 
+    </tr>
+
+    </table>
+
+    <hr style="border:1px solid rgba(255,255,255,.10);">
+
+    <p style="
+    color:#dbeafe;
+    font-size:15px;
+    line-height:1.8;
+    margin:0;
+    ">
+
+    💡 <b>Strategy Objective</b><br><br>
+
+    This backtest evaluates the strategy using an <b>initial trading capital of ₹150,000</b>.
+    All key performance metrics, including <b>Return %, CAGR and Drawdown %</b>, are calculated consistently using this capital base to provide a realistic and standardized performance assessment.
+
+    </p>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("### 📊 Key Performance Indicators")
     c1, c2, c3, c4 = st.columns(4)
 
     c1.metric(
@@ -567,29 +651,165 @@ with tab1:
     sharpe_ratio
 )
     
+    st.success(f"""
+    💡 Executive Summary
+
+    Strategy executed **{total_trades:,}** historical trades over an
+    11-year backtest period.
+
+    The system achieved a net profit of **₹{net_profit:,.0f}**
+    while maintaining a maximum drawdown of **{max_dd_pct}%**,
+    demonstrating stable long-term performance.
+    """)
+    
 with tab2:
 
+    st.subheader("📈 Performance Analytics")
 
-    st.subheader("📈 Performance")
+    # -------------------------
+    # Performance Calculations
+    # -------------------------
+
+    initial_capital = 150000
 
     equity_curve["Account Equity"] = (
-        150000 +
+        initial_capital +
         equity_curve["Cumulative PnL INR"]
     )
+
+    highest_equity = equity_curve["Account Equity"].max()
+    lowest_equity = equity_curve["Account Equity"].min()
+    capital_multiple = highest_equity / initial_capital
+
+    # ==========================
+    # Premium KPI Cards
+    # ==========================
+
+    k1, k2, k3, k4, k5, k6 = st.columns(6)
+
+    k1.metric(
+        "💰 Net Profit",
+        f"₹{net_profit:,.0f}"
+    )
+
+    k2.metric(
+        "🚀 Total Return",
+        f"{return_pct:.2f}%"
+    )
+
+    k3.metric(
+        "📈 CAGR",
+        f"{cagr:.2f}%"
+    )
+
+    k4.metric(
+        "🏆 Profit Factor",
+        f"{profit_factor:.2f}"
+    )
+
+    k5.metric(
+        "📉 Max Drawdown",
+        f"{max_dd_pct:.2f}%"
+    )
+
+    k6.metric(
+        "⚡ Sharpe",
+        f"{sharpe_ratio:.2f}"
+    )
+
+    st.markdown("---")
+
+    # ==========================
+    # Equity Curve Header
+    # ==========================
+
+    st.markdown(
+        f"""
+### 📈 Account Equity Growth
+
+**Growth of ₹150,000 Initial Capital Throughout the Entire Backtest Period**
+
+The equity curve below illustrates how the strategy compounded capital from an initial investment of **₹150,000**, reflecting cumulative trading performance across the complete historical test.
+"""
+    )
+
+    # ==========================
+    # Equity Curve
+    # ==========================
 
     fig = px.line(
         equity_curve,
         x="Exit Time",
         y="Account Equity",
-        title="Account Equity Curve"
+        title="Account Equity Growth"
+    )
+
+    fig.update_layout(
+        height=650,
+        template="plotly_dark",
+        hovermode="x unified",
+        title_x=0.5,
+        margin=dict(
+            l=20,
+            r=20,
+            t=60,
+            b=20
+        )
+    )
+
+    fig.update_traces(
+        line=dict(width=3)
     )
 
     st.plotly_chart(
         fig,
         use_container_width=True
     )
-    st.markdown("---")
 
+    # ==========================
+    # Executive Insight
+    # ==========================
+
+    st.success(
+        f"""
+💡 Executive Performance Insight
+
+Starting with an initial capital of ₹150,000, the strategy generated a cumulative net profit of ₹{net_profit:,.0f}, delivering an overall return of {return_pct:.2f}% across the complete backtest period.
+
+The equity curve demonstrates steady long-term capital appreciation through multiple market cycles while maintaining disciplined risk management and systematic execution.
+"""
+    )
+
+    # ==========================
+    # Performance Statistics
+    # ==========================
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    final_equity = initial_capital + net_profit
+    capital_multiple = final_equity / initial_capital
+
+    c1.metric(
+        "📈 Final Equity",
+        f"₹{final_equity:,.0f}"
+    )
+
+    c2.metric(
+        "💼 Initial Capital",
+        "₹150,000"
+    )
+
+    c3.metric(
+        "📊 Capital Multiple",
+        f"{capital_multiple:.2f}×"
+    )
+
+    c4.metric(
+        "💰 Net Wealth Created",
+        f"₹{net_profit:,.0f}"
+    )
+
+    st.markdown("---")
 
 with tab3:
 
@@ -603,8 +823,8 @@ with tab3:
     )
 
     c2.metric(
-        "Recovery Factor",
-        recovery_factor
+        "📊 Expectancy / Trade",
+        f"₹{expectancy:,.2f}"
     )
 
     c3.metric(
@@ -664,6 +884,20 @@ with tab3:
         use_container_width=True,
         key="risk_drawdown_curve"
     )
+
+    st.success(f"""
+    💡 **Expectancy / Trade**
+
+    Average net profit generated from each completed trade.
+
+    **Formula**
+
+    Net Profit ÷ Total Trades
+
+    ₹{net_profit:,.0f} ÷ {total_trades:,}
+
+    = **₹{expectancy:,.2f} per trade**
+    """)
     
 with tab4:
 
@@ -1292,8 +1526,8 @@ c7.metric(
 )
 
 c8.metric(
-    "Recovery",
-    recovery_factor
+    "Expectancy",
+    f"₹{expectancy:,.2f}"
 )
 # ==========================
 # STRATEGY SCORECARD
@@ -1308,14 +1542,14 @@ scorecard = pd.DataFrame({
         "Win Rate",
         "Profit Factor",
         "Max Drawdown",
-        "Recovery Factor",
+        "Expectancy / Trade",
         "Total Trades"
     ],
     "Value": [
         f"{win_rate}%",
         profit_factor,
         f"{max_dd_pct}%",
-        recovery_factor,
+        f"₹{expectancy:,.2f}",
         total_trades
     ]
 })
@@ -1352,8 +1586,8 @@ c2.metric("Candles", f"{total_candles:,}")
 c3.metric("Trades", f"{total_trades:,}")
 
 c4.metric(
-    "Recovery Factor",
-    recovery_factor
+    "Expectancy / Trade",
+    f"₹{expectancy:,.2f}"
 )
 # ==========================
 # EQUITY CURVE
