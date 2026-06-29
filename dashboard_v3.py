@@ -243,7 +243,12 @@ net_profit = round(
 
 # Capital Based Return
 
-capital = 150000
+# Capital Based Return
+
+if index_type == "COMBINED":
+    capital = 300000
+else:
+    capital = 150000
 
 return_pct = round(
     (net_profit / capital) * 100,
@@ -562,12 +567,12 @@ with tab1:
 
     <tr>
     <td>💼 Initial Capital</td>
-    <td><b>₹150,000 <span style="color:#94a3b8;font-size:13px;">(Single Capital Base Used Throughout the Backtest)</span></b></td>
+    <td><b>₹{capital:,.0f} <span style="color:#94a3b8;font-size:13px;">(Single Capital Base Used Throughout the Backtest)</span></b></td>
     </tr>
 
     <tr>
     <td>🚀 Wealth Growth</td>
-    <td><b>{return_pct:.2f}% <span style="color:#94a3b8;font-size:13px;">(From ₹150,000 Initial Capital)</span></b></td>
+    <td><b>{return_pct:.2f}% <span style="color:#94a3b8;font-size:13px;">(From ₹{capital:,.0f} Initial Capital)</span></b></td>
     </tr>
 
     <tr>
@@ -623,7 +628,7 @@ with tab1:
 
     💡 <b>Strategy Objective</b><br><br>
 
-    This backtest evaluates the strategy using an <b>initial trading capital of ₹150,000</b>.
+    This backtest evaluates the strategy using an <b>initial trading capital of ₹{capital:,.0f}</b>.
     All key performance metrics, including <b>Return %, CAGR and Drawdown %</b>, are calculated consistently using this capital base to provide a realistic and standardized performance assessment.
 
     </p>
@@ -670,7 +675,7 @@ with tab2:
     # Performance Calculations
     # -------------------------
 
-    initial_capital = 150000
+    initial_capital = capital
 
     equity_curve["Account Equity"] = (
         initial_capital +
@@ -727,9 +732,9 @@ with tab2:
         f"""
 ### 📈 Account Equity Growth
 
-**Growth of ₹150,000 Initial Capital Throughout the Entire Backtest Period**
+**Growth of ₹{capital:,.0f} Initial Capital Throughout the Entire Backtest Period**
 
-The equity curve below illustrates how the strategy compounded capital from an initial investment of **₹150,000**, reflecting cumulative trading performance across the complete historical test.
+The equity curve below illustrates how the strategy compounded capital from an initial investment of **₹{capital:,.0f}**, reflecting cumulative trading performance across the complete historical test.
 """
     )
 
@@ -774,10 +779,10 @@ The equity curve below illustrates how the strategy compounded capital from an i
         f"""
 💡 Executive Performance Insight
 
-Starting with an initial capital of ₹150,000, the strategy generated a cumulative net profit of ₹{net_profit:,.0f}, delivering an overall return of {return_pct:.2f}% across the complete backtest period.
+    Starting with an initial capital of ₹{capital:,.0f}, the strategy generated a cumulative net profit of ₹{net_profit:,.0f}, delivering an overall return of {return_pct:.2f}% across the complete backtest period.
 
-The equity curve demonstrates steady long-term capital appreciation through multiple market cycles while maintaining disciplined risk management and systematic execution.
-"""
+    The equity curve demonstrates steady long-term capital appreciation through multiple market cycles while maintaining disciplined risk management and systematic execution.
+    """
     )
 
     # ==========================
@@ -796,7 +801,7 @@ The equity curve demonstrates steady long-term capital appreciation through mult
 
     c2.metric(
         "💼 Initial Capital",
-        "₹150,000"
+        f"₹{capital:,.0f}"
     )
 
     c3.metric(
@@ -1473,7 +1478,7 @@ with tab7:
     hovertemplate=
     "<b>Exit Time:</b> %{customdata[0]}<br>" +
     "<b>Account Equity:</b> ₹%{customdata[1]:,.0f}<br>" +
-    "<b>Initial Capital:</b> ₹150,000<br>" +
+    f"<b>Initial Capital:</b> ₹{capital:,.0f}<br>" +
     "<b>Drawdown ₹:</b> ₹%{customdata[2]:,.0f}<br>" +
     "<b>Drawdown %:</b> %{customdata[3]:.2f}%<br>" +
     "<extra></extra>"
@@ -1668,7 +1673,7 @@ st.info(f"""
 
 **🕯️ Historical Candles:** {total_candles:,}
 
-**💼 Initial Capital:** ₹150,000
+**💼 Initial Capital:** ₹{capital:,.0f}
 
 **⚙️ Trading Methodology:** 100% Rule-Based Systematic Strategy
 
@@ -1685,7 +1690,7 @@ c3.metric("Trades", f"{total_trades:,}")
 
 c4.metric(
     "💼 Initial Capital",
-    "₹150,000"
+    f"₹{capital:,.0f}"
 )
 # ==========================
 # EQUITY CURVE
@@ -1696,7 +1701,7 @@ st.markdown("---")
 st.subheader("📈 Equity Curve")
 
 equity_curve["Account Equity"] = (
-    150000 +
+    capital +
     equity_curve["Cumulative PnL INR"]
 )
 
@@ -1959,7 +1964,7 @@ fig_year = px.bar(
         "PnL INR",
         "Points"
     ],
-    title="Year-wise Return % (₹1.5L Capital)"
+    title=f"Year-wise Return % (₹{capital:,.0f} Capital)"
 )
 
 fig_year.update_layout(
@@ -2367,7 +2372,7 @@ fig_month = px.bar(
     "Avg PnL/Trade",
     "Points"
 ],
-    title="Monthly Return % (₹1.5L Capital)"
+    title=f"Monthly Return % (₹{capital:,.0f} Capital)"
 )
 
 st.plotly_chart(
@@ -2574,7 +2579,7 @@ st.dataframe(
 st.markdown("---")
 
 st.subheader(
-    "🟢 Top 20 Winners"
+    "🏆 Top 20 Winners"
 )
 
 st.dataframe(
@@ -2674,7 +2679,7 @@ st.download_button(
 st.markdown("---")
 
 st.subheader(
-    "🔴 Top 20 Losers"
+    "⚠ Top 20 Losers"
 )
 
 st.dataframe(
@@ -2727,7 +2732,7 @@ border-collapse:collapse;
 
 <tr>
 <td>💼 Initial Capital</td>
-<td><b>₹150,000</b></td>
+<td><b>₹{capital:,.0f}</b></td>
 </tr>
 
 <tr>
@@ -2779,7 +2784,7 @@ margin:0;
 💡 <b>Executive Assessment</b><br><br>
 
 Starting with an initial trading capital of
-<b>₹150,000</b>, the strategy generated a cumulative
+<b>₹{capital:,.0f}</b>, the strategy generated a cumulative
 net profit of <b>₹{net_profit:,.0f}</b>,
 delivering an overall return of
 <b>{return_pct:.2f}%</b>
