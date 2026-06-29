@@ -1193,7 +1193,7 @@ with tab7:
 
     ✅ Average Drawdown is calculated using only losing trades.<br>
 
-    ✅ All drawdown percentages are calculated using a fixed Initial Capital of <b>₹150,000</b> to maintain consistency across all years and months.
+    ✅ All drawdown percentages are calculated using a fixed Initial Capital of <b>₹{capital:,.0f}</b> to maintain consistency across all years and months.
     <br><br>
 
     <b>Why not Traditional Equity Drawdown?</b><br>
