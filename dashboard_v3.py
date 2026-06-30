@@ -135,7 +135,7 @@ Prepared For
 
 <h1 style="
 margin:0;
-font-size:35px;
+font-size:30px;
 font-weight:800;
 color:#F8FAFC;
 letter-spacing:.8px;
