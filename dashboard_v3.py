@@ -153,7 +153,7 @@ width:120px;
 height:4px;
 background:linear-gradient(90deg,#22C55E,#3B82F6);
 border-radius:999px;
-margin:20px auto 25px auto;
+margin:20px auto 20px auto;
 display:block;
 ">
 </div>
