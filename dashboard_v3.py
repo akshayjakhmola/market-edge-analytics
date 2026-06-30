@@ -95,7 +95,7 @@ div[role="radiogroup"] p{
 st.markdown(
     """
 <div style="
-margin-top:-5px;
+margin-top:-10px;
 margin-bottom:8px;
 font-size:15px;
 color:#E5E7EB;
