@@ -1714,7 +1714,7 @@ color:#93C5FD;
 font-weight:600;
 margin-bottom:8px;
 ">
-Institutional Trading Report
+Backtest Trading Report
 </div>
 
 <h1 style="
