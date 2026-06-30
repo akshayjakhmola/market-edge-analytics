@@ -2952,7 +2952,7 @@ st.dataframe(
 )
 st.markdown("---")
 
-st.subheader("🏆 Final Strategy Verdict")
+st.subheader("🎯 Final Strategy Verdict")
 
 st.markdown(f"""
 <div style="
