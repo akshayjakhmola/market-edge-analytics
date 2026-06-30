@@ -1787,7 +1787,7 @@ padding:16px;
 border-radius:14px;
 ">
 <div style="color:#94A3B8;font-size:13px;">Backtest Period</div>
-<div style="color:white;font-size:22px;font-weight:700;margin-top:6px;">
+<div style="color:white;font-size:20px;font-weight:700;margin-top:6px;">
 2015–2026
 </div>
 </div>
