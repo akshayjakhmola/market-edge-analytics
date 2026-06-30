@@ -3069,7 +3069,7 @@ st.markdown(
     <div style='text-align:center; padding:15px;'>
 
     <h4 style='margin-bottom:5px;'>
-    📊 Market Edge Analytics
+    📊 STRATEGY PERFORMANCE DOSSIER
     </h4>
 
 
