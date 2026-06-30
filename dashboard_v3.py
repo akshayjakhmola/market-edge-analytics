@@ -3069,7 +3069,7 @@ st.markdown(
     <div style='text-align:center; padding:15px;'>
 
     <h4 style='margin-bottom:5px;'>
-    📊 STRATEGY PERFORMANCE DOSSIER
+    📊 STRATEGY PERFORMANCE DOSSIER - Data-Driven Performance Insights
     </h4>
 
 
@@ -3109,7 +3109,7 @@ st.markdown("""
 </style>
 
 <div class="footer">
-    <h3>✨ DIRECTIONAL STRATEGY BACKTEST RESULT</h3>
+    <h3>📈 DIRECTIONAL STRATEGY PERFORMANCE REPORT</h3>
     <p>Monitor • Analyze • Optimize</p>
 </div>
 """, unsafe_allow_html=True)
