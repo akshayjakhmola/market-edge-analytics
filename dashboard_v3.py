@@ -136,15 +136,14 @@ Prepared For
 </div>
 
 <h1 style="
-margin:0 auto;
-width:100%;
-text-align:center;
-display:block;
+margin:0;
 font-size:18px;
-font-weight:800;
-color:#F8FAFC;
-letter-spacing:.10px;
-text-shadow:0 0 15px rgba(255,255,255,.12);
+font-weight:900;
+color:#FFFFFF;
+letter-spacing:0.5px;
+text-align:center;
+line-height:1.3;
+text-shadow:0 0 18px rgba(255,255,255,.18);
 ">
 Mr. Lucky Gangwal
 </h1>
